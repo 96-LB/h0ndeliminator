@@ -2,13 +2,15 @@ import discord, discord.ext, os, discord_slash, flask, threading
 
 ## bot ##
 
+targets = ['h0nde', 'metamask support']
+
 intents = discord.Intents().default()
 intents.members = True
 bot = discord.ext.commands.Bot(command_prefix='/', intents=intents)
 slash = discord_slash.SlashCommand(bot, sync_commands=True)
 
 async def check_account(member):
-    is_h0nde = member.id is not bot.user.id and 'h0nde' in member.name.lower()
+    is_h0nde = member.id is not bot.user.id and any([target in member.name.lower() for target in targets])
     if is_h0nde:
         print(f'Banning {member.name} from {member.guild.name}...')
         await member.guild.ban(member, reason='h0nde spam account')
@@ -18,7 +20,7 @@ async def check_account(member):
 @bot.event
 async def on_ready():
     print('Bot is running.')
-    await bot.change_presence(activity=discord.Game(name='http://tiny.cc/h0ndeliminator'))
+    await bot.change_presence(activity=discord.Game(name='https://96lb.ml/h0ndeliminator'))
 
 @bot.event
 async def on_member_join(member):
